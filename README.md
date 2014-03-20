@@ -1,29 +1,27 @@
 # XmlrpcController
 
-TODO: Write a gem description
+Small gem to accept XMLRPC calls in your controller, written for providing Webhooks as a IFTTT trigger by pretending to be a Wordpress blog. Entirely inspired from [femto113/node-ifttt-webhook](https://github.com/femto113/node-ifttt-webhook) which is entirely inspired from [captn3m0/ifttt-webhook](https://github.com/captn3m0/ifttt-webhook)
 
-## Installation
+## How to use
 
-Add this line to your application's Gemfile:
+### For ITTT
 
-    gem 'xmlrpc_controller'
+````
+class RpcController < ApplicationController
+  include XmlrpcController
+  # you want to be selective with this
+  skip_before_filter :verify_authenticity_token
+  
+  before_filter :ifttt_webhook_defaults
 
-And then execute:
+  # override when needed, by default it will POST a request to the url as specified in the tags, body is the payload
+  def ifttt_new_post(title, body, categories, tags)
+  end
+  
+end
 
-    $ bundle
+````
 
-Or install it yourself as:
+### Other Uses
 
-    $ gem install xmlrpc_controller
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it ( http://github.com/<my-github-username>/xmlrpc_controller/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+The module will call try to call the method defined on the controller as specified in the RPC call with a Nokogiri Object as the argument.
