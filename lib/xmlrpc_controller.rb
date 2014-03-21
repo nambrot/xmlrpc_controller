@@ -45,11 +45,14 @@ module XmlrpcController
     rpc_response("xml.value { xml.array { xml.data }}")
   end
 
+  # TODO better error handling of empty title/categories
   def metaWeblog_newPost(args)
     new_post_params = Hash.from_xml(args.children[3].to_s)['param']['value']['struct']['member']
-    title = new_post_params[0]['value']['string']
+    # title = new_post_params[0]['value']['string']
+    title =''
     body = new_post_params[1]['value']['string']
-    categories = (new_post_params[2]['value']['array']['data']['value'].class == Array ? new_post_params[2]['value']['array']['data']['value'].map { |e| e['string'] } : [new_post_params[2]['value']['array']['data']['value']['string']] )
+    categories = []
+    # categories = (new_post_params[2]['value']['array']['data']['value'].class == Array ? new_post_params[2]['value']['array']['data']['value'].map { |e| e['string'] } : [new_post_params[2]['value']['array']['data']['value']['string']] )
     tags = (new_post_params[3]['value']['array']['data']['value'].class == Array ? new_post_params[3]['value']['array']['data']['value'].map { |e| e['string'] } : [new_post_params[3]['value']['array']['data']['value']['string']] )
     ifttt_new_post(title, body, categories, tags)
     rpc_response("xml.value 'nothing'")
