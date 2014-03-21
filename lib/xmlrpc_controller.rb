@@ -1,5 +1,6 @@
 require "xmlrpc_controller/version"
-
+require "nokogiri"
+require "httparty"
 module XmlrpcController
 
   # the main method handling the RPC request. It parses the method name, and passes the Nokogiri XML node that represents the params
